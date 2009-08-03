@@ -19,30 +19,11 @@ module Barby
       with_options opts do
         cmd = ImMagick::convert do |m|
           m.filename = filename
-          m.size = "#{full_width * 2}x#{full_height}"
+          m.size = "#{full_width}x#{full_height}"
           m.canvas = :white
           m.fill = :black
 
           x = margin
-          y = margin
-
-          if barcode.two_dimensional?
-            encoding.each do |line|
-              line.split(//).map{|c| c == '1' }.each do |bar|
-                m.draw "rectangle #{x},#{y} #{x+(xdim-1)}, #{y+(ydim-1)}" if bar
-                x += xdim
-              end
-              x = margin
-              y += ydim
-            end
-          else
-            booleans.each do |bar|
-              m.draw "rectangle #{x},#{y} #{x+(xdim-1)}, #{y+(height-1)}" if bar
-              x += xdim
-            end
-          end
-
-
           y = margin
 
           if barcode.two_dimensional?
